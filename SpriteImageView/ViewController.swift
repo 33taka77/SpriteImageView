@@ -7,12 +7,29 @@
 //
 
 import UIKit
+import SpriteKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var spriteView: SKView!
+    @IBAction func pushTheButton(sender: AnyObject) {
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        spriteView.showsFPS = true
+        spriteView.showsNodeCount = true
+        spriteView.setTranslatesAutoresizingMaskIntoConstraints(true)
+        spriteView.frame = CGRectMake(0, label.frame.height+label.frame.origin.y, self.view.frame.width, self.view.frame.height - label.frame.origin.y - label.frame.height - button.frame.height)
+
+    }
+    override func viewWillAppear(animated: Bool) {
+        let scene = MyScene(size:CGSizeMake(spriteView.frame.width, spriteView.frame.height))
+        scene.scaleMode = .AspectFill
+        spriteView.presentScene(scene)
+        
     }
 
     override func didReceiveMemoryWarning() {
