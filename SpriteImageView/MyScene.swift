@@ -9,7 +9,12 @@
 import UIKit
 import SpriteKit
 
-
+protocol SpriteViewDelegate {
+    func numOfSections()->Int
+    func sectionStrings()->[String]
+    func numOfItemsInSection( section:Int )->Int
+    func itemImageAtIndex( index:NSIndexPath )->ImageObject
+}
 class MyScene: SKScene {
     enum TouchKind {
         case none
@@ -118,7 +123,7 @@ class MyScene: SKScene {
     }
     let intervalSpace:CGFloat = 10.0
     let aroundSpace:CGFloat = 50.0
-    let imageManager:ImageManager!
+    //let imageManager:ImageManager!
     //var imageSpriteArray:[ImageSprite] = []
     var imageSpriteArray:[[ImageSprite]] = []
     
@@ -129,30 +134,32 @@ class MyScene: SKScene {
     var pinchCount:Int = 0
     var sectionTitles:[SectionInfo] = []
     var totalDisplayHeight:CGFloat = 0
+    var spriteViewDelegate:SpriteViewDelegate? = nil
+    var munOfSection:Int = 1
     
     override init() {
         screenSize = CGSizeMake(0, 0)
-        imageManager = AssetManager.sharedInstance
+        //imageManager = AssetManager.sharedInstance
         super.init()
-        imageManager.setupData()
+        //imageManager.setupData()
         touchObject = TouchEventInfo()
         getOffset(true)
     }
     
     required init?(coder aDecoder: NSCoder) {
         screenSize = CGSizeMake(0, 0)
-        imageManager = AssetManager.sharedInstance
+        //imageManager = AssetManager.sharedInstance
         super.init(coder: aDecoder)
-        imageManager.setupData()
+        //imageManager.setupData()
         touchObject = TouchEventInfo()
         getOffset(true)
     }
     
     override init(size: CGSize) {
         screenSize = size
-        imageManager = AssetManager.sharedInstance
+        //imageManager = AssetManager.sharedInstance
         super.init(size: size)
-        imageManager.setupData()
+        //imageManager.setupData()
         touchObject = TouchEventInfo()
         getOffset(true)
     }
@@ -161,6 +168,9 @@ class MyScene: SKScene {
         /* Setup your scene here */
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         screenSize = CGSizeMake(self.view!.frame.width,self.view!.frame.height)
+        
+        munOfSection = self.spriteViewDelegate!.numOfSections()
+        
         buildTotalImages(true,scaleChange: false)
         self.prepareImageSpriteToDraw(0, endHeight: screenSize.height+500)
         getOffset(true)
@@ -377,8 +387,9 @@ class MyScene: SKScene {
     }
     private func buildTotalImages( initializeFlag:Bool,scaleChange:Bool ) {
         if initializeFlag == true {
-            let sections = imageManager.getSectionArray()
-            for sectionTitleString in sections {
+            //let sections = imageManager.getSectionArray()
+            let sections:[String]? = self.spriteViewDelegate?.sectionStrings()
+            for sectionTitleString in sections! {
                 let sectionSprite = SectionInfo(title: sectionTitleString, imageName: "SectionBar.png")
                 self.addChild(sectionSprite.sectionSprite)
                 self.addChild(sectionSprite.titleNode)
@@ -405,14 +416,16 @@ class MyScene: SKScene {
     }
     private func buildImageInSection( section:Int, startYpos:CGFloat, initializeFlag:Bool,scaleChange:Bool )->CGFloat {
         var imagesInSection:[ImageSprite] = []
-        let numOfImage = imageManager.getImageCount(section)
+        //let numOfImage = imageManager.getImageCount(section)
+        let numOfImage = spriteViewDelegate?.numOfItemsInSection(section)
         let spriteWidth = (screenSize.width - widthAjust - aroundSpace*2 - CGFloat(colume-1)*intervalSpace + xOffset*CGFloat(colume))  / CGFloat(colume)
         var totalHeight:CGFloat = 0
         for var i = 0; i < numOfImage; i++ {
             let imageSprite:ImageSprite
             if initializeFlag == true {
                 let index = NSIndexPath(forRow: i, inSection: section)
-                let imageObject:ImageObject = imageManager.getImageObjectIndexAt(index)!
+                //let imageObject:ImageObject = imageManager.getImageObjectIndexAt(index)!
+                let imageObject:ImageObject! = spriteViewDelegate?.itemImageAtIndex(index)
                 let sizeOfOriginal = imageObject.getSize()
                 let size = CGSizeMake(spriteWidth, spriteWidth/sizeOfOriginal.width*sizeOfOriginal.height)
                 imageSprite = ImageSprite(index: index, targetWidth:spriteWidth, size:size, scene:self)
@@ -470,7 +483,8 @@ class MyScene: SKScene {
                 let currentHeight = imagesInSection[j].posotion.y + imagesInSection[j].targetSize.height
                 if imagesInSection[j].posotion.y > startHeight && currentHeight < endHeight {
                     let index = imagesInSection[j].indexPath
-                    let imageObject:ImageObject = imageManager.getImageObjectIndexAt(index)!
+                    //let imageObject:ImageObject = imageManager.getImageObjectIndexAt(index)!
+                    let imageObject:ImageObject! = spriteViewDelegate?.itemImageAtIndex(index)
                     imageObject.getImageWithSize(imagesInSection[index.row].originalSize, callback: { (image) -> Void in
                         let imageSprite = imagesInSection[index.row]
                         imageSprite.setImageData(image)
@@ -564,7 +578,11 @@ class MyScene: SKScene {
                 imageSprite.posotion = CGPointMake(imageSprite.posotion.x, imageSprite.posotion.y+distance)
                 removeImageSprite(imageSprite)
                 if isBoundRequest == false {
-                    let isNewItem = imageSprite.move(-200, end: screenSize.height+300)
+                    //let isNewItem = imageSprite.move(-200, end: screenSize.height+300)
+                    let isNewItem = imageSprite.move(-200, end: screenSize.height+300, callback: { (index) -> ImageObject in
+                        let imageObj:ImageObject! = self.spriteViewDelegate?.itemImageAtIndex(index)
+                        return imageObj
+                    })
                     if isNewItem == true {
                         imagesForDraw.append(imageSprite)
                     }

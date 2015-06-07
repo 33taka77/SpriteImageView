@@ -9,8 +9,9 @@
 import UIKit
 import SpriteKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,SpriteViewDelegate {
 
+    private var scene: MyScene!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var spriteView: SKView!
@@ -26,7 +27,7 @@ class ViewController: UIViewController {
 
     }
     override func viewWillAppear(animated: Bool) {
-        let scene = MyScene(size:CGSizeMake(spriteView.frame.width, spriteView.frame.height))
+        scene = MyScene(size:CGSizeMake(spriteView.frame.width, spriteView.frame.height))
         scene.scaleMode = .AspectFill
         spriteView.presentScene(scene)
         
@@ -35,6 +36,19 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func numOfSections() -> Int {
+        return 1
+    }
+    func numOfItemsInSection(section: Int) -> Int {
+        return 1
+    }
+    func itemImageAtIndex(index: NSIndexPath) -> ImageObject {
+        <#code#>
+    }
+    func sectionStrings() -> [String] {
+        <#code#>
     }
 
 
