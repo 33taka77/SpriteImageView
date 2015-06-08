@@ -31,6 +31,10 @@ class ViewController: UIViewController,SpriteViewDelegate {
         scene = MyScene(size:CGSizeMake(spriteView.frame.width, spriteView.frame.height))
         scene.scaleMode = .AspectFill
         scene.spriteViewDelegate = self
+        scene.intervalSpace = 1.0
+        scene.aroundSpace = 2.0
+        
+        
         let imageManager:ImageManager = AssetManager.sharedInstance
         imageManager.setupData()
         spriteView.presentScene(scene)

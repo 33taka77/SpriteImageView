@@ -49,9 +49,9 @@ class MyScene: SKScene {
         }
     }
     
-    let maxColume:Int = 6
-    let scrollAccellParameter:CGFloat = 0.3
-    let decleaseSpeedParam:CGFloat = 4
+    private let maxColume:Int = 6
+    private let scrollAccellParameter:CGFloat = 0.3
+    private let decleaseSpeedParam:CGFloat = 4
     
 /*
     let xOffset47Inchx1:CGFloat = 19
@@ -78,64 +78,65 @@ class MyScene: SKScene {
     let yOffset47InchCase1x6:CGFloat = 7
     let yOffset47InchCase2x6:CGFloat = 15
 */
-    let xOffset47Inchx1:CGFloat = 0
-    let yOffset47InchCase1x1:CGFloat = 0
-    let yOffset47InchCase2x1:CGFloat = 0
+    private let xOffset47Inchx1:CGFloat = 0
+    private let yOffset47InchCase1x1:CGFloat = 0
+    private let yOffset47InchCase2x1:CGFloat = 0
     
-    let xOffset47Inchx2:CGFloat = 0
-    let yOffset47InchCase1x2:CGFloat = 0
-    let yOffset47InchCase2x2:CGFloat = 0
+    private let xOffset47Inchx2:CGFloat = 0
+    private let yOffset47InchCase1x2:CGFloat = 0
+    private let yOffset47InchCase2x2:CGFloat = 0
     
-    let xOffset47Inchx3:CGFloat = 0
-    let yOffset47InchCase1x3:CGFloat = 0
-    let yOffset47InchCase2x3:CGFloat = 0
+    private let xOffset47Inchx3:CGFloat = 0
+    private let yOffset47InchCase1x3:CGFloat = 0
+    private let yOffset47InchCase2x3:CGFloat = 0
     
-    let xOffset47Inchx4:CGFloat = 0
-    let yOffset47InchCase1x4:CGFloat = 0
-    let yOffset47InchCase2x4:CGFloat = 0
+    private let xOffset47Inchx4:CGFloat = 0
+    private let yOffset47InchCase1x4:CGFloat = 0
+    private let yOffset47InchCase2x4:CGFloat = 0
     
-    let xOffset47Inchx5:CGFloat = 0
-    let yOffset47InchCase1x5:CGFloat = 0
-    let yOffset47InchCase2x5:CGFloat = 0
+    private let xOffset47Inchx5:CGFloat = 0
+    private let yOffset47InchCase1x5:CGFloat = 0
+    private let yOffset47InchCase2x5:CGFloat = 0
     
-    let xOffset47Inchx6:CGFloat = 0
-    let yOffset47InchCase1x6:CGFloat = 0
-    let yOffset47InchCase2x6:CGFloat = 0
+    private let xOffset47Inchx6:CGFloat = 0
+    private let yOffset47InchCase1x6:CGFloat = 0
+    private let yOffset47InchCase2x6:CGFloat = 0
 
     
-    let xOffset55Inch:CGFloat = 0
-    let yOffset55InchCase1:CGFloat = 0
-    let yOffset55InchCase2:CGFloat = 0
-    let xOffset4Inch:CGFloat = 0
-    let yOffset4InchCase1:CGFloat = 0
-    let yOffset4InchCase2:CGFloat = 0
-    let xOffset35Inch:CGFloat = 0
-    let yOffset35InchCase1:CGFloat = 0
-    let yOffset35InchCase2:CGFloat = 0
+    private let xOffset55Inch:CGFloat = 0
+    private let yOffset55InchCase1:CGFloat = 0
+    private let yOffset55InchCase2:CGFloat = 0
+    private let xOffset4Inch:CGFloat = 0
+    private let yOffset4InchCase1:CGFloat = 0
+    private let yOffset4InchCase2:CGFloat = 0
+    private let xOffset35Inch:CGFloat = 0
+    private let yOffset35InchCase1:CGFloat = 0
+    private let yOffset35InchCase2:CGFloat = 0
     
-    let widthAjust:CGFloat = 0
+    private let widthAjust:CGFloat = 0
     
-    var screenSize:CGSize
+    private var screenSize:CGSize
     var colume:Int = 5 {
         didSet{
             getOffset(false)
         }
     }
-    let intervalSpace:CGFloat = 10.0
-    let aroundSpace:CGFloat = 50.0
+    var intervalSpace:CGFloat = 10.0
+    var aroundSpace:CGFloat = 50.0
     //let imageManager:ImageManager!
     //var imageSpriteArray:[ImageSprite] = []
-    var imageSpriteArray:[[ImageSprite]] = []
-    
-    var imagesForDraw:[ImageSprite] = []
-    var xOffset:CGFloat = 0
-    var yOffset:CGFloat = 0
-    var touchObject:TouchEventInfo!
-    var pinchCount:Int = 0
-    var sectionTitles:[SectionInfo] = []
-    var totalDisplayHeight:CGFloat = 0
+    private var imageSpriteArray:[[ImageSprite]] = []
     var spriteViewDelegate:SpriteViewDelegate? = nil
-    var munOfSection:Int = 1
+    
+    private var imagesForDraw:[ImageSprite] = []
+    private var xOffset:CGFloat = 0
+    private var yOffset:CGFloat = 0
+    private var touchObject:TouchEventInfo!
+    private var pinchCount:Int = 0
+    private var sectionTitles:[SectionInfo] = []
+    private var totalDisplayHeight:CGFloat = 0
+    
+    private var munOfSection:Int = 1
     
     override init() {
         screenSize = CGSizeMake(0, 0)
