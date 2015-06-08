@@ -135,7 +135,7 @@ class MyScene: SKScene {
     private var pinchCount:Int = 0
     private var sectionTitles:[SectionInfo] = []
     private var totalDisplayHeight:CGFloat = 0
-    
+    private var maxHeightIndex:NSIndexPath!
     private var munOfSection:Int = 1
     
     override init() {
@@ -461,6 +461,8 @@ class MyScene: SKScene {
             }
             if totalHeight < pos.y + imageSprite.targetSize.height {
                 totalHeight = pos.y + imageSprite.targetSize.height
+                let index = NSIndexPath(forRow: i, inSection: section)
+                maxHeightIndex = index
             }
             if scaleChange == false {
                 imageSprite.setPosition(pos)
@@ -586,6 +588,14 @@ class MyScene: SKScene {
                     })
                     if isNewItem == true {
                         imagesForDraw.append(imageSprite)
+                    }
+                    if maxHeightIndex == imageSprite.indexPath {
+                        if imageSprite.sprite != nil {
+                            if imageSprite.posotion.y + imageSprite.sprite.size.height < screenSize.height && distance < 0 {
+                                isBound = true
+                                delta = imageSprite.posotion.y + imageSprite.sprite.size.height - screenSize.height
+                            }
+                        }
                     }
                 }else{
                     imageSprite.moveWithAnimation()
