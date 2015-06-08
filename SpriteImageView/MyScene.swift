@@ -173,7 +173,7 @@ class MyScene: SKScene {
         munOfSection = self.spriteViewDelegate!.numOfSections()
         
         buildTotalImages(true,scaleChange: false)
-        self.prepareImageSpriteToDraw(0, endHeight: screenSize.height+500)
+        //self.prepareImageSpriteToDraw(0, endHeight: screenSize.height+500)
         getOffset(true)
         
     }
@@ -270,6 +270,7 @@ class MyScene: SKScene {
         default:
             println("")
         }
+        /*
         for imageSprite in imagesForDraw {
             let node = imageSprite.sprite
             if node != nil {
@@ -280,6 +281,7 @@ class MyScene: SKScene {
                 }
             }
         }
+        */
     }
     
     func changeScale( scale:CGFloat ) {
@@ -379,6 +381,7 @@ class MyScene: SKScene {
     }
     
     private func containObject ( array:[AnyObject], object:AnyObject )->(Bool,Int) {
+        println("array.count :\(array.count)")
         for (index, obj) in enumerate(array) {
             if obj === object {
                 return (true,index)
@@ -467,6 +470,11 @@ class MyScene: SKScene {
             if scaleChange == false {
                 imageSprite.setPosition(pos)
                 imagesInSection.append(imageSprite)
+                imageSprite.move(-200, end: screenSize.height+300, callback: { (index) -> ImageObject in
+                    let imageObj:ImageObject! = self.spriteViewDelegate?.itemImageAtIndex(index)
+                    return imageObj
+                })
+
             }else{
                 imageSprite.setTargetSize(CGSizeMake(spriteWidth, spriteWidth*imageSprite.originalSize.height/imageSprite.originalSize.width))
                 imageSprite.setPosition(pos)
@@ -529,14 +537,16 @@ class MyScene: SKScene {
             if imageSprite.sprite != nil {
                 let (isExist:Bool,index:Int) = self.containObject(self.children, object: imageSprite.sprite)
                 if isExist == true {
-                    if index < imagesForDraw.count {
+                    
+                   // if index < imagesForDraw.count {
                         removeImage.append(imageSprite.sprite)
                         imageSprite.sprite = nil
-                        imagesForDraw.removeAtIndex(index)
+                        //imagesForDraw.removeAtIndex(index)
                         self.removeChildrenInArray(removeImage)
-                    }else{
+                    //}else{
                         //println("error")
-                    }
+                    //}
+
                 }
             }
         }
@@ -579,15 +589,15 @@ class MyScene: SKScene {
             for imageSprite in imagesInSection{
                 
                 imageSprite.posotion = CGPointMake(imageSprite.posotion.x, imageSprite.posotion.y+distance)
-                removeImageSprite(imageSprite)
+                //removeImageSprite(imageSprite)
                 if isBoundRequest == false {
                     //let isNewItem = imageSprite.move(-200, end: screenSize.height+300)
-                    let isNewItem = imageSprite.move(-200, end: screenSize.height+300, callback: { (index) -> ImageObject in
+                    let isNewItem = imageSprite.move(-100, end: screenSize.height+100, callback: { (index) -> ImageObject in
                         let imageObj:ImageObject! = self.spriteViewDelegate?.itemImageAtIndex(index)
                         return imageObj
                     })
                     if isNewItem == true {
-                        imagesForDraw.append(imageSprite)
+                        //imagesForDraw.append(imageSprite)
                     }
                     if maxHeightIndex == imageSprite.indexPath {
                         if imageSprite.sprite != nil {
