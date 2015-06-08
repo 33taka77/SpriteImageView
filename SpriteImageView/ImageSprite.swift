@@ -69,7 +69,7 @@ class ImageSprite {
         self.sprite.position = nodePos
         //self.sprite.physicsBody = SKPhysicsBody(rectangleOfSize: self.sprite.size)
     }
-    func move( start:CGFloat, end:CGFloat callback:(index:NSIndexPath)->ImageObject)->Bool {
+    func move( start:CGFloat, end:CGFloat, callback:(index:NSIndexPath)->ImageObject)->Bool {
         var result = false
         if self.sprite != nil {
             self.sprite.position = self.nodePosition

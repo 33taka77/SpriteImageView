@@ -24,11 +24,15 @@ class ViewController: UIViewController,SpriteViewDelegate {
         spriteView.showsNodeCount = true
         spriteView.setTranslatesAutoresizingMaskIntoConstraints(true)
         spriteView.frame = CGRectMake(0, label.frame.height+label.frame.origin.y, self.view.frame.width, self.view.frame.height - label.frame.origin.y - label.frame.height - button.frame.height)
+       
 
     }
     override func viewWillAppear(animated: Bool) {
         scene = MyScene(size:CGSizeMake(spriteView.frame.width, spriteView.frame.height))
         scene.scaleMode = .AspectFill
+        scene.spriteViewDelegate = self
+        let imageManager:ImageManager = AssetManager.sharedInstance
+        imageManager.setupData()
         spriteView.presentScene(scene)
         
     }
@@ -39,16 +43,24 @@ class ViewController: UIViewController,SpriteViewDelegate {
     }
     
     func numOfSections() -> Int {
-        return 1
+        let imageManager = AssetManager.sharedInstance
+        let numSection = imageManager.sectionCount
+        return numSection
     }
     func numOfItemsInSection(section: Int) -> Int {
-        return 1
+        let imageManager = AssetManager.sharedInstance
+        let numOfItem = imageManager.getImageCount(section)
+        return numOfItem
     }
     func itemImageAtIndex(index: NSIndexPath) -> ImageObject {
-        <#code#>
+        let imageManager = AssetManager.sharedInstance
+        let item = imageManager.getImageObjectIndexAt(index)
+        return item!
     }
     func sectionStrings() -> [String] {
-        <#code#>
+        let imageManager = AssetManager.sharedInstance
+        let sections = imageManager.getSectionArray()
+        return sections
     }
 
 
