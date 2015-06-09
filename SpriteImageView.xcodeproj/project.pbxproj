@@ -19,6 +19,7 @@
 		81E78FFA1B213CCD004782AE /* AssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E78FF51B213CCD004782AE /* AssetManager.swift */; };
 		81E78FFB1B213CCD004782AE /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E78FF61B213CCD004782AE /* ImageManager.swift */; };
 		81E78FFC1B213CCD004782AE /* MyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E78FF71B213CCD004782AE /* MyScene.swift */; };
+		81E89D4B1B26AF900071DF13 /* SKImageSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E89D4A1B26AF900071DF13 /* SKImageSpriteNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		81E78FF51B213CCD004782AE /* AssetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetManager.swift; sourceTree = "<group>"; };
 		81E78FF61B213CCD004782AE /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		81E78FF71B213CCD004782AE /* MyScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyScene.swift; sourceTree = "<group>"; };
+		81E89D4A1B26AF900071DF13 /* SKImageSpriteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKImageSpriteNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				81E78FF51B213CCD004782AE /* AssetManager.swift */,
 				81E78FF61B213CCD004782AE /* ImageManager.swift */,
 				81E78FF71B213CCD004782AE /* MyScene.swift */,
+				81E89D4A1B26AF900071DF13 /* SKImageSpriteNode.swift */,
 				81E78FD11B213C6F004782AE /* AppDelegate.swift */,
 				81E78FD31B213C6F004782AE /* ViewController.swift */,
 				81E78FF11B213CA2004782AE /* MyScene.sks */,
@@ -235,6 +238,7 @@
 				81E78FFA1B213CCD004782AE /* AssetManager.swift in Sources */,
 				81E78FFB1B213CCD004782AE /* ImageManager.swift in Sources */,
 				81E78FFC1B213CCD004782AE /* MyScene.swift in Sources */,
+				81E89D4B1B26AF900071DF13 /* SKImageSpriteNode.swift in Sources */,
 				81E78FD41B213C6F004782AE /* ViewController.swift in Sources */,
 				81E78FF81B213CCD004782AE /* ImageSprite.swift in Sources */,
 				81E78FD21B213C6F004782AE /* AppDelegate.swift in Sources */,
@@ -435,6 +439,7 @@
 				81E78FED1B213C6F004782AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		81E78FEE1B213C6F004782AE /* Build configuration list for PBXNativeTarget "SpriteImageViewTests" */ = {
 			isa = XCConfigurationList;
@@ -443,6 +448,7 @@
 				81E78FF01B213C6F004782AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
