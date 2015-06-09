@@ -180,7 +180,14 @@ class MyScene: SKScene {
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        
+        if touches.count == 1 {
+            let touch = touches.first as! UITouch
+            let locaion = touch.locationInNode(self)
+            let selectedNode = self.nodeAtPoint(locaion)
+            if selectedNode.name == "Image" {
+                
+            }
+        }
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
             touchObject.prevPoint = location

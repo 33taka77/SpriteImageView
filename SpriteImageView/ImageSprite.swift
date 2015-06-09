@@ -46,7 +46,8 @@ class ImageSprite {
         self.scene = scene
         self.indexPath = index
         let imageTexture = SKTexture(image: imageData)
-        self.sprite = SKImageSpriteNode(texture: imageTexture,color: UIColor.blackColor(), size: self.targetSize, imageSprite:self)
+        self.sprite = SKImageSpriteNode(texture: imageTexture)
+        //self.sprite = SKImageSpriteNode(texture: imageTexture,color: UIColor.blackColor(), size: self.targetSize, imageSprite:self)
         self.sprite.anchorPoint = CGPoint(x: 0, y: 1)
         //self.setTargetSize(CGSizeMake(targetWidth+self.scene.xOffset, (targetWidth+self.scene.xOffset)/self.originalSize.width * self.originalSize.height))
     }
@@ -61,9 +62,14 @@ class ImageSprite {
         self.originalSize = size
         self.image = imageData
         let imageTexture = SKTexture(image: imageData)
-        self.sprite = SKImageSpriteNode(texture: imageTexture,color: UIColor.blackColor(), size: self.targetSize, imageSprite:self)
+        self.sprite = SKImageSpriteNode(texture: imageTexture)
+        //self.sprite = SKImageSpriteNode(texture: imageTexture,color: UIColor.blackColor(), size: self.targetSize, imageSprite:self)
         self.sprite.anchorPoint = CGPoint(x: 0, y: 1)
-        self.sprite.observationInfo
+        
+        let userData:NSMutableDictionary? = NSMutableDictionary()
+        userData!.setValue(self, forKey: "object")
+        self.sprite.userData = userData
+        self.sprite.name = "Image"
         sprite.xScale = self.scale
         sprite.yScale = self.scale
         let nodePos = self.nodePosition
