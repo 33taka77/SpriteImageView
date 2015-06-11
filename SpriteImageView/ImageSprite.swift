@@ -70,6 +70,7 @@ class ImageSprite {
         userData!.setValue(self, forKey: "object")
         self.sprite.userData = userData
         self.sprite.name = "Image"
+        
         sprite.xScale = self.scale
         sprite.yScale = self.scale
         let nodePos = self.nodePosition

@@ -185,16 +185,51 @@ class MyScene: SKScene {
             let locaion = touch.locationInNode(self)
             let selectedNode = self.nodeAtPoint(locaion)
             if selectedNode.name == "Image" {
-                
+                touchObject.prevPoint = locaion
+                touchObject.prevTime = touch.timestamp
             }
         }
+        /*
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
             touchObject.prevPoint = location
             touchObject.prevTime = touch.timestamp
         }
+        */
+    }
+    private func tapEvent( point:CGPoint ) {
+        
+    }
+    private func longTapEvent( point:CGPoint ) {
+        
     }
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        if touches.count == 1 {
+            let touch = touches.first as! UITouch
+            let location = touch.locationInNode(self)
+            let selectedNode = self.nodeAtPoint(location)
+            if selectedNode.name == "Image" {
+                if touchObject.prevPoint == location {
+                    if touch.timestamp - touchObject.prevTime < 1 {
+                        tapEvent( location )
+                    }else{
+                        longTapEvent( location )
+                    }
+                }else{
+                    let distance:CGFloat = location.y - touchObject.prevPoint.y
+                    let time = touch.timestamp - touchObject.prevTime
+                    let speed = distance / CGFloat(time)
+                    touchObject.speed = abs(speed)
+                    if location.y > touchObject.prevPoint.y {
+                        touchObject.kindOfTouch = TouchKind.flicScrollDown
+                    }else{
+                        touchObject.kindOfTouch = TouchKind.filckScrollUp
+                    }
+                    touchObject.intervalTime = touch.timestamp
+                }
+            }
+        }
+/*
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
             let distance:CGFloat = location.y - touchObject.prevPoint.y
@@ -208,6 +243,7 @@ class MyScene: SKScene {
             }
             touchObject.intervalTime = touch.timestamp
         }
+*/
     }
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         for touch in (touches as! Set<UITouch>) {
