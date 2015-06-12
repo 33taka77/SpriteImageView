@@ -14,7 +14,7 @@ class ImageSprite {
     private let scene:MyScene
     private var image:UIImage!
     var posotion:CGPoint
-    var sprite:SKSpriteNode!
+    var sprite:SKImageSpriteNode!
     var originalSize:CGSize
     var targetSize:CGSize
     var indexPath:NSIndexPath!
@@ -70,7 +70,7 @@ class ImageSprite {
         userData!.setValue(self, forKey: "object")
         self.sprite.userData = userData
         self.sprite.name = "Image"
-        
+        self.sprite.imageSprite = self
         sprite.xScale = self.scale
         sprite.yScale = self.scale
         let nodePos = self.nodePosition

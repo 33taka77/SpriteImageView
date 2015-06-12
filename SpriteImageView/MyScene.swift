@@ -114,6 +114,7 @@ class MyScene: SKScene {
     private let yOffset35InchCase2:CGFloat = 0
     
     private let widthAjust:CGFloat = 0
+    private let singleViewAroundSpace:CGFloat = 10
     
     private var screenSize:CGSize
     var colume:Int = 5 {
@@ -137,6 +138,7 @@ class MyScene: SKScene {
     private var totalDisplayHeight:CGFloat = 0
     private var maxHeightIndex:NSIndexPath!
     private var munOfSection:Int = 1
+    private var backupSingleViewSprite:SKSpriteNode!
     
     override init() {
         screenSize = CGSizeMake(0, 0)
@@ -198,10 +200,60 @@ class MyScene: SKScene {
         */
     }
     private func tapEvent( point:CGPoint ) {
-        
+        alphaAction()
+        let selectedNode:SKImageSpriteNode = self.nodeAtPoint(point) as! SKImageSpriteNode
+        showSingleView(selectedNode.imageSprite)
     }
     private func longTapEvent( point:CGPoint ) {
         
+    }
+    private func showSingleView( imageSprite:ImageSprite ){
+        func makeSingleViewSprite( index:NSIndexPath ) {
+            if self.backupSingleViewSprite != nil {
+                self.removeSprite(backupSingleViewSprite)
+                self.backupSingleViewSprite = nil
+            }
+            let imageObject:ImageObject! = spriteViewDelegate?.itemImageAtIndex(index)
+            let sizeOfOriginal = imageObject.getSize()
+            let width = self.view!.frame.width - singleViewAroundSpace*2
+            
+            let size = CGSizeMake(width, width/sizeOfOriginal.width*sizeOfOriginal.height)
+            imageObject.getImageWithSize(size, callback: { (imageData) -> Void in
+                let imageTexture = SKTexture(image: imageData)
+                let singleViewSprite = SKSpriteNode(texture: imageTexture, color: UIColor.blackColor(), size: imageSprite.sprite.size)
+                //let singleViewSprite = SKSpriteNode(texture: imageTexture)
+                singleViewSprite.anchorPoint = CGPoint(x: 0, y: 1)
+                singleViewSprite.name = "SingleView"
+                singleViewSprite.position =  imageSprite.sprite.position
+                self.addChild(singleViewSprite)
+                let pos = CGPointMake(self.singleViewAroundSpace, (self.view!.frame.height-size.height)/2)
+                let moveAction:SKAction = SKAction.moveTo(self.convertPointFromView(pos), duration: 0.3)
+                let rotateAction:SKAction
+                if size.width > size.height {
+                    rotateAction = SKAction.rotateToAngle(0, duration: 0.3)
+                }else{
+                    rotateAction = SKAction.rotateToAngle(CGFloat(M_PI/2), duration: 0.0)
+                }
+                let scaleAction:SKAction = SKAction.scaleTo(size.width/imageSprite.sprite.size.width, duration: 0.3)
+                let actionArray = [moveAction,scaleAction/*,rotateAction*/]
+                //let actionArray = [moveAction]
+                let action = SKAction.group(actionArray)
+                singleViewSprite.runAction(action)
+                self.backupSingleViewSprite = singleViewSprite
+            })
+        }
+        let index = imageSprite.indexPath
+        makeSingleViewSprite(index)
+    }
+    private func alphaAction() {
+        let alhaAction = SKAction.fadeAlphaTo(0.1, duration: 0.3)
+        for array in imageSpriteArray{
+            for imageSprite in array {
+                if imageSprite.sprite != nil {
+                    imageSprite.sprite.runAction(alhaAction)
+                }
+            }
+        }
     }
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         if touches.count == 1 {
@@ -593,7 +645,13 @@ class MyScene: SKScene {
                 }
             }
         }
-        
+    }
+    private func removeSprite( sprite:SKSpriteNode ) {
+        let alhaAction = SKAction.fadeAlphaTo(0.0, duration: 0.2)
+        sprite.runAction(alhaAction)
+        var removeImage:[AnyObject] = []
+        removeImage.append(sprite)
+        self.removeChildrenInArray(removeImage)
     }
     private func boundAnimation( delta:CGFloat ) {
         scrollImageSprite(-delta,isBoundRequest: true)
