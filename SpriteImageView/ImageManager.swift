@@ -44,8 +44,16 @@ class ImageObject:Item {
     }
     func getImageWithSize(size:CGSize, callback: (UIImage)->Void ){
     }
+    func getImageDataOriginal(callback: (NSData, Int)->Void ) {
+    }
     func getSize()->CGSize {
         return CGSizeMake(0, 0)
+    }
+    func getMetaData()->[NSObject:AnyObject]? {
+        return nil
+    }
+    func getOrientation()->Int {
+        return 0
     }
 }
 

@@ -96,6 +96,25 @@ class ImageSprite {
         }
         return result
     }
+    func addSpriteToSceneWithAnimation( position:CGPoint, targetSizeWidth:CGFloat, duration:NSTimeInterval, callback:(index:NSIndexPath)->ImageObject) {
+        let imgObj:ImageObject = callback(index: self.indexPath)
+        let sourceSize = imgObj.getSize()
+        let originalSize = self.originalSize
+        let targetSize = CGSizeMake(targetSizeWidth, targetSizeWidth/originalSize.width*originalSize.height)
+        //let targetSize = CGSizeMake(originalSize.width*4, originalSize.height*4)
+        //let metaData = imgObj.getMetaData()
+        imgObj.getImageWithSize(targetSize, callback: { (image) -> Void in
+        //imgObj.getImageDataOriginal { (imgData, orientaion) -> Void in
+            //let image = UIImage(data: imgData)
+            //let scale = sourceSize.width / targetSize.width
+            //let image = UIImage(data: imgData, scale: scale)
+            //let size = image?.size
+            self.setImageData(image)
+            let orientation = imgObj.getOrientation()
+            self.scene.addChild(self.sprite)
+            self.moveWithAction(position, targetSize: targetSize, orientation: orientation, duration: duration)
+        })
+    }
     func moveWithAnimation() {
         if self.sprite != nil {
             let moveAction:SKAction = SKAction.moveTo(self.nodePosition, duration: 0.1)
@@ -126,6 +145,40 @@ class ImageSprite {
             self.sprite.runAction(action)
             //self.sprite.position = self.nodePosition
             //self.sprite.size = newSize
+        }
+    }
+    
+    func moveWithAction( position:CGPoint, targetSize:CGSize, orientation:Int, duration:NSTimeInterval ) {
+        if self.sprite != nil {
+            
+            if targetSize.width < targetSize.height {
+                var newPosition:CGPoint = CGPointZero
+                self.sprite.anchorPoint = CGPoint(x: 0, y: 0)
+                var angle:CGFloat = 0
+                if orientation == 2 {
+                    angle = CGFloat(M_PI*90/180)
+                    newPosition = CGPointMake(position.x, position.y+targetSize.height)
+                }else if orientation == 3 {
+                    angle = CGFloat(M_PI*270/180)
+                    newPosition = CGPointMake(position.x+targetSize.width, position.y)
+                }
+                let rotateAction = SKAction.rotateByAngle( angle, duration: 0)
+                let scaleX = targetSize.height/targetSize.width
+                let scaleXAction = SKAction.scaleXTo(scaleX, duration: duration)
+                let scaleY = targetSize.width/targetSize.height
+                let scaleYAction = SKAction.scaleYTo(scaleY, duration: duration)
+                let moveAction:SKAction = SKAction.moveTo(self.scene.convertPointFromView(newPosition), duration: duration)
+                let array = [rotateAction,scaleXAction,scaleYAction,moveAction]
+                let action = SKAction.group(array)
+                self.sprite.runAction(action)
+                self.sprite.anchorPoint = CGPoint(x: 0, y: 1)
+            }else{
+                let moveAction:SKAction = SKAction.moveTo(self.scene.convertPointFromView(position), duration: duration)
+                let resizeActione:SKAction = SKAction.resizeToWidth(targetSize.width, height: targetSize.height, duration: duration)
+                let actionArray = [moveAction,resizeActione]
+                let action = SKAction.group(actionArray)
+                self.sprite.runAction(action)
+            }
         }
     }
 }

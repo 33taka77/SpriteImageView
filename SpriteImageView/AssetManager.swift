@@ -241,14 +241,78 @@ class Asset:ImageObject {
         let option = PHImageRequestOptions()
         option.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
         option.resizeMode  = PHImageRequestOptionsResizeMode.Fast
-        option.normalizedCropRect = CGRectMake(0, 0, size.width, size.height)
+        //option.normalizedCropRect = CGRectMake(0, 0, size.width, size.height)
         
         PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: size, contentMode:PHImageContentMode.AspectFit, options: option, resultHandler: { (image, info) -> Void in
         callback(image: image)
         })
     }
+
+    override func getImageDataOriginal(callback: (NSData, Int) -> Void) {
+        let option = PHImageRequestOptions()
+        option.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
+        option.resizeMode  = PHImageRequestOptionsResizeMode.Fast
+        option.synchronous = true
+        PHImageManager.defaultManager().requestImageDataForAsset(self.asset, options: option) { (imgData, dataUTI, orientation, info) -> Void in
+            //let ciImage:CIImage = CIImage(data: imgData)
+            var orientationValue:Int
+            switch orientation{
+            case .Down:
+                orientationValue = 1
+            case .Up:
+                orientationValue = 0
+            case .Right:
+                orientationValue = 3
+            case .Left:
+                orientationValue = 2
+            default:
+                orientationValue = 0
+            }
+            callback(imgData,orientationValue)
+            //metaData = ciImage.properties()
+            //println("meraData:\(metaData)")
+        }
+
+    }
+    override func getOrientation() -> Int {
+        let option = PHImageRequestOptions()
+        option.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
+        option.resizeMode  = PHImageRequestOptionsResizeMode.Fast
+        option.synchronous = true
+        var orientationValue:Int = 0
+        PHImageManager.defaultManager().requestImageDataForAsset(self.asset, options: option) { (imgData, dataUTI, orientation, info) -> Void in
+            //let ciImage:CIImage = CIImage(data: imgData)
+            
+            switch orientation{
+            case .Down:
+                orientationValue = 1
+            case .Up:
+                orientationValue = 0
+            case .Right:
+                orientationValue = 3
+            case .Left:
+                orientationValue = 2
+            default:
+                orientationValue = 0
+            }
+            //metaData = ciImage.properties()
+            //println("meraData:\(metaData)")
+        }
+        return orientationValue
+    }
     override func getSize()->CGSize {
         return CGSizeMake(CGFloat(asset.pixelWidth), CGFloat(asset.pixelHeight))
+    }
+    override func getMetaData()->[NSObject:AnyObject]? {
+        let option = PHImageRequestOptions()
+        var metaData:[NSObject:AnyObject]?
+        option.deliveryMode = PHImageRequestOptionsDeliveryMode.FastFormat
+        PHImageManager.defaultManager().requestImageDataForAsset(self.asset, options: option) { (imgData, dataUTI, orientation, info) -> Void in
+            let ciImage:CIImage = CIImage(data: imgData)
+            metaData = ciImage.properties()
+            println("meraData:\(metaData)")
+        }
+        return metaData
     }
 }
 

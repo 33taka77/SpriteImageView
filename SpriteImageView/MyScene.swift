@@ -208,6 +208,7 @@ class MyScene: SKScene {
         
     }
     private func showSingleView( imageSprite:ImageSprite ){
+        /*
         func makeSingleViewSprite( index:NSIndexPath ) {
             if self.backupSingleViewSprite != nil {
                 self.removeSprite(backupSingleViewSprite)
@@ -244,6 +245,20 @@ class MyScene: SKScene {
         }
         let index = imageSprite.indexPath
         makeSingleViewSprite(index)
+        */
+        let index = imageSprite.indexPath
+        let width = self.view!.frame.width - singleViewAroundSpace*2
+        let singleViewImageSprite = ImageSprite(index: index, targetWidth:imageSprite.sprite.size.width, size:imageSprite.sprite.size, scene:self)
+        singleViewImageSprite.setPosition(self.convertPointToView(imageSprite.sprite.position) )
+        let pos = CGPointMake(self.singleViewAroundSpace, (self.view!.frame.height-width/imageSprite.sprite.size.width*imageSprite.sprite.size.height)/2)
+        singleViewImageSprite.addSpriteToSceneWithAnimation(pos, targetSizeWidth: width, duration: 1.0) { (index) -> ImageObject in
+                let imageObj:ImageObject! = self.spriteViewDelegate?.itemImageAtIndex(index)
+                return imageObj
+        }
+        //singleViewImageSprite.setTargetSize(CGSizeMake(width, width*imageSprite.originalSize.height/imageSprite.originalSize.width))
+        //singleViewImageSprite.setPosition(pos)
+        //singleViewImageSprite.moveWithAction()
+        
     }
     private func alphaAction() {
         let alhaAction = SKAction.fadeAlphaTo(0.1, duration: 0.3)
