@@ -66,7 +66,16 @@ class ViewController: UIViewController,SpriteViewDelegate {
         let sections = imageManager.getSectionArray()
         return sections
     }
+    func showSingleImage() {
+        let closeButton = UIButton(frame: CGRectMake(self.spriteView.frame.width-40, 10, 32, 32))
+        closeButton.setImage(UIImage(named: "close1.png"), forState: UIControlState.Normal)
+        closeButton.addTarget(self, action: "pushSingleViewCloseButton", forControlEvents: UIControlEvents.TouchDown)
+        self.spriteView.addSubview(closeButton)
+    }
 
+    func pushSingleViewCloseButton() {
+        self.scene.closeSingleView()
+    }
 
 }
 

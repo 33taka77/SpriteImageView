@@ -20,6 +20,7 @@
 		81E78FFB1B213CCD004782AE /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E78FF61B213CCD004782AE /* ImageManager.swift */; };
 		81E78FFC1B213CCD004782AE /* MyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E78FF71B213CCD004782AE /* MyScene.swift */; };
 		81E89D4B1B26AF900071DF13 /* SKImageSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E89D4A1B26AF900071DF13 /* SKImageSpriteNode.swift */; };
+		81EB74721B2E948600D183E3 /* close1.png in Resources */ = {isa = PBXBuildFile; fileRef = 81EB74711B2E948600D183E3 /* close1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		81E78FF61B213CCD004782AE /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		81E78FF71B213CCD004782AE /* MyScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyScene.swift; sourceTree = "<group>"; };
 		81E89D4A1B26AF900071DF13 /* SKImageSpriteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKImageSpriteNode.swift; sourceTree = "<group>"; };
+		81EB74711B2E948600D183E3 /* close1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 		81E78FCE1B213C6F004782AE /* SpriteImageView */ = {
 			isa = PBXGroup;
 			children = (
+				81EB74711B2E948600D183E3 /* close1.png */,
 				81E78FF31B213CCD004782AE /* ImageSprite.swift */,
 				81E78FF41B213CCD004782AE /* SectionBar.png */,
 				81E78FF51B213CCD004782AE /* AssetManager.swift */,
@@ -215,6 +218,7 @@
 			files = (
 				81E78FF91B213CCD004782AE /* SectionBar.png in Resources */,
 				81E78FD71B213C6F004782AE /* Main.storyboard in Resources */,
+				81EB74721B2E948600D183E3 /* close1.png in Resources */,
 				81E78FDC1B213C6F004782AE /* LaunchScreen.xib in Resources */,
 				81E78FF21B213CA2004782AE /* MyScene.sks in Resources */,
 				81E78FD91B213C6F004782AE /* Images.xcassets in Resources */,

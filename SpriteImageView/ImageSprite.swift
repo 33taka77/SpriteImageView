@@ -172,6 +172,7 @@ class ImageSprite {
                 let action = SKAction.group(array)
                 self.sprite.runAction(action)
                 self.sprite.anchorPoint = CGPoint(x: 0, y: 1)
+                
             }else{
                 let moveAction:SKAction = SKAction.moveTo(self.scene.convertPointFromView(position), duration: duration)
                 let resizeActione:SKAction = SKAction.resizeToWidth(targetSize.width, height: targetSize.height, duration: duration)
@@ -179,6 +180,32 @@ class ImageSprite {
                 let action = SKAction.group(actionArray)
                 self.sprite.runAction(action)
             }
+        }
+    }
+    func removeSpriteWithAnimation( duration:NSTimeInterval ) {
+        if self.sprite != nil {
+            let moveAction:SKAction = SKAction.moveTo(self.nodePosition, duration: duration)
+            let prevSize:CGSize = self.sprite.size
+            let newSize:CGSize = self.targetSize
+            let scale:CGFloat = self.targetSize.width/self.sprite.size.width
+            println("prevSize=\(prevSize)")
+            println("newSize=\(newSize)")
+            println("scale=\(scale)")
+            let scaleAction:SKAction = SKAction.scaleBy(scale, duration: duration)
+            let resizeActione:SKAction = SKAction.resizeToWidth(self.targetSize.width, height: self.targetSize.height, duration: duration)
+            //let scaleXAction:SKAction = SKAction.scaleXTo(scale, duration: 0.2)
+            //let scaleYAction:SKAction = SKAction.scaleYTo(scale, duration: 0.2)
+            //let actionArray = [moveAction, scaleXAction,scaleYAction]
+            //let actionArray = [moveAction, scaleAction]
+            let actionArray = [moveAction,resizeActione]
+            let action = SKAction.group(actionArray)
+            //let action = SKAction.sequence(actionArray)
+            //self.sprite.runAction(action)
+            self.sprite.runAction(action, completion: { () -> Void in
+                self.scene.removeImageSprite(self)
+            })
+            //self.sprite.position = self.nodePosition
+            //self.sprite.size = newSize
         }
     }
 }

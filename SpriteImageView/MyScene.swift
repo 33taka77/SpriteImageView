@@ -14,6 +14,7 @@ protocol SpriteViewDelegate {
     func sectionStrings()->[String]
     func numOfItemsInSection( section:Int )->Int
     func itemImageAtIndex( index:NSIndexPath )->ImageObject
+    func showSingleImage()
 }
 class MyScene: SKScene {
     enum TouchKind {
@@ -138,7 +139,7 @@ class MyScene: SKScene {
     private var totalDisplayHeight:CGFloat = 0
     private var maxHeightIndex:NSIndexPath!
     private var munOfSection:Int = 1
-    private var backupSingleViewSprite:SKSpriteNode!
+    private var backupSingleViewSprite:ImageSprite!
     
     override init() {
         screenSize = CGSizeMake(0, 0)
@@ -200,12 +201,17 @@ class MyScene: SKScene {
         */
     }
     private func tapEvent( point:CGPoint ) {
-        alphaAction()
+        alphaAction(0.2, duration: 0.3)
         let selectedNode:SKImageSpriteNode = self.nodeAtPoint(point) as! SKImageSpriteNode
         showSingleView(selectedNode.imageSprite)
+        spriteViewDelegate?.showSingleImage()
     }
     private func longTapEvent( point:CGPoint ) {
         
+    }
+    
+    func closeSingleView() {
+        self.backupSingleViewSprite.removeSpriteWithAnimation(0.2)
     }
     private func showSingleView( imageSprite:ImageSprite ){
         /*
@@ -249,9 +255,10 @@ class MyScene: SKScene {
         let index = imageSprite.indexPath
         let width = self.view!.frame.width - singleViewAroundSpace*2
         let singleViewImageSprite = ImageSprite(index: index, targetWidth:imageSprite.sprite.size.width, size:imageSprite.sprite.size, scene:self)
+        self.backupSingleViewSprite = singleViewImageSprite
         singleViewImageSprite.setPosition(self.convertPointToView(imageSprite.sprite.position) )
         let pos = CGPointMake(self.singleViewAroundSpace, (self.view!.frame.height-width/imageSprite.sprite.size.width*imageSprite.sprite.size.height)/2)
-        singleViewImageSprite.addSpriteToSceneWithAnimation(pos, targetSizeWidth: width, duration: 1.0) { (index) -> ImageObject in
+        singleViewImageSprite.addSpriteToSceneWithAnimation(pos, targetSizeWidth: width, duration: 0.2) { (index) -> ImageObject in
                 let imageObj:ImageObject! = self.spriteViewDelegate?.itemImageAtIndex(index)
                 return imageObj
         }
@@ -260,8 +267,8 @@ class MyScene: SKScene {
         //singleViewImageSprite.moveWithAction()
         
     }
-    private func alphaAction() {
-        let alhaAction = SKAction.fadeAlphaTo(0.1, duration: 0.3)
+    private func alphaAction(alpha:CGFloat, duration:NSTimeInterval) {
+        let alhaAction = SKAction.fadeAlphaTo(alpha, duration: duration)
         for array in imageSpriteArray{
             for imageSprite in array {
                 if imageSprite.sprite != nil {
@@ -640,24 +647,16 @@ class MyScene: SKScene {
         self.removeChildrenInArray(removeImage)
     }
     
-    private func removeImageSprite(imageSprite:ImageSprite) {
+    func removeImageSprite(imageSprite:ImageSprite) {
         var removeImage:[AnyObject] = []
         let currentHeight = imageSprite.posotion.y + imageSprite.targetSize.height
-        if currentHeight > screenSize.height+200 || currentHeight < -200 {
-            if imageSprite.sprite != nil {
-                let (isExist:Bool,index:Int) = self.containObject(self.children, object: imageSprite.sprite)
-                if isExist == true {
-                    
-                   // if index < imagesForDraw.count {
-                        removeImage.append(imageSprite.sprite)
-                        imageSprite.sprite = nil
-                        //imagesForDraw.removeAtIndex(index)
-                        self.removeChildrenInArray(removeImage)
-                    //}else{
-                        //println("error")
-                    //}
-
-                }
+        if imageSprite.sprite != nil {
+            let (isExist:Bool,index:Int) = self.containObject(self.children, object: imageSprite.sprite)
+            if isExist == true {
+                removeImage.append(imageSprite.sprite)
+                imageSprite.sprite = nil
+                self.removeChildrenInArray(removeImage)
+                alphaAction(1.0, duration: 0.3)
             }
         }
     }
