@@ -15,9 +15,12 @@ class ImageSprite {
     private var image:UIImage!
     var posotion:CGPoint
     var sprite:SKImageSpriteNode!
+    //var sprite:SKSpriteNode!
     var originalSize:CGSize
     var targetSize:CGSize
     var indexPath:NSIndexPath!
+    var isDisplay:Bool = false
+    
     var scale:CGFloat {
         get {
             return (self.targetSize.width)/self.originalSize.width
@@ -63,7 +66,7 @@ class ImageSprite {
         self.image = imageData
         let imageTexture = SKTexture(image: imageData)
         self.sprite = SKImageSpriteNode(texture: imageTexture)
-        //self.sprite = SKImageSpriteNode(texture: imageTexture,color: UIColor.blackColor(), size: self.targetSize, imageSprite:self)
+        //self.sprite = SKSpriteNode(texture: imageTexture)
         self.sprite.anchorPoint = CGPoint(x: 0, y: 1)
         
         let userData:NSMutableDictionary? = NSMutableDictionary()
@@ -90,7 +93,10 @@ class ImageSprite {
                 imgObj.getImageWithSize(self.originalSize, callback: { (image) -> Void in
                     self.setImageData(image)
                     self.scene.addChild(self.sprite)
+                    self.isDisplay = true
                 })
+            }else{
+                self.isDisplay = false
             }
             
         }

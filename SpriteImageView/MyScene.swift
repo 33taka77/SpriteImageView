@@ -140,6 +140,7 @@ class MyScene: SKScene {
     private var maxHeightIndex:NSIndexPath!
     private var munOfSection:Int = 1
     private var backupSingleViewSprite:ImageSprite!
+    private var blurEffectNode:SKEffectNode!
     
     override init() {
         screenSize = CGSizeMake(0, 0)
@@ -178,6 +179,14 @@ class MyScene: SKScene {
         buildTotalImages(true,scaleChange: false)
         //self.prepareImageSpriteToDraw(0, endHeight: screenSize.height+500)
         getOffset(true)
+        blurEffectNode = SKEffectNode()
+        let filter:CIFilter = CIFilter(name: "CIGaussianBlur")
+        filter.setDefaults()
+        filter.setValue(10, forKey: "inputRadius")
+        self.blurEffectNode.filter = filter
+        self.blurEffectNode.blendMode = SKBlendMode.Multiply
+        
+        self.addChild(blurEffectNode)
         
     }
     
@@ -269,10 +278,25 @@ class MyScene: SKScene {
     }
     private func alphaAction(alpha:CGFloat, duration:NSTimeInterval) {
         let alhaAction = SKAction.fadeAlphaTo(alpha, duration: duration)
+        //var removeImage:[AnyObject] = []
         for array in imageSpriteArray{
             for imageSprite in array {
                 if imageSprite.sprite != nil {
                     imageSprite.sprite.runAction(alhaAction)
+                    /*
+                    let imgSp = imageSprite as ImageSprite
+                    if imgSp.isDisplay == true {
+                        if alpha != 1.0 {
+                            removeImage.append(imageSprite.sprite)
+                            self.removeChildrenInArray(removeImage)
+                            self.blurEffectNode.addChild(imageSprite.sprite)
+                        }else{
+                            removeImage.append(imageSprite.sprite)
+                            self.blurEffectNode.removeChildrenInArray(removeImage)
+                            self.addChild(imageSprite.sprite)
+                        }
+                    }
+                    */
                 }
             }
         }
@@ -550,6 +574,7 @@ class MyScene: SKScene {
                 let sizeOfOriginal = imageObject.getSize()
                 let size = CGSizeMake(spriteWidth, spriteWidth/sizeOfOriginal.width*sizeOfOriginal.height)
                 imageSprite = ImageSprite(index: index, targetWidth:spriteWidth, size:size, scene:self)
+                
             }else{
                 imagesInSection = imageSpriteArray[section] as [ImageSprite]
                 imageSprite = imagesInSection[i]
